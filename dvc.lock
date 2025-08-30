@@ -111,6 +111,10 @@ stages:
       hash: md5
       md5: a9cd9d91da89f732843d72548f64ded3
       size: 25951
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 7c0defbed51bb97a184d61b0ef2d83ac
+      size: 72
     - path: scripts/train.sh
       hash: md5
       md5: dd23c32e80dec05ad31d520763fc5cbb

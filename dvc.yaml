@@ -47,6 +47,7 @@ stages:
     - src/models/train.py
     - data/processed_data/X_train_scaled.csv
     - data/processed_data/y_train.csv
+    - models/best_params.pkl
     outs:
     - models/xgb.pkl
   
