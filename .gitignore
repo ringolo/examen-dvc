@@ -1,5 +1,6 @@
 /venv
 /clean_data.csv
+/logs
 
 #python
 __pycache__/
