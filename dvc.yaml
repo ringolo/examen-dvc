@@ -1,0 +1,64 @@
+stages:
+  pull_data:
+    cmd: ./scripts/pull_data.sh
+    deps:
+    - scripts/pull_data.sh
+    - src/data/pull_data.py
+    outs:
+    - data/raw_data/data.csv
+
+  train_test_split:
+    cmd: ./scripts/train_test_split.sh
+    deps:
+    - scripts/train_test_split.sh
+    - src/data/train_test_split.py
+    - data/raw_data/data.csv
+    outs:
+    - data/processed_data/X_train.csv
+    - data/processed_data/X_test.csv
+    - data/processed_data/y_train.csv
+    - data/processed_data/y_test.csv
+
+  normalize:
+    cmd: ./scripts/normalize.sh
+    deps:
+    - scripts/normalize.sh
+    - src/data/normalize.py
+    - data/processed_data/X_train.csv
+    - data/processed_data/X_test.csv
+    outs:
+    - data/processed_data/X_train_scaled.csv
+    - data/processed_data/X_test_scaled.csv
+
+  grid_search:
+    cmd: ./scripts/grid_search.sh
+    deps:
+    - scripts/grid_search.sh
+    - src/models/grid_search.py
+    - data/processed_data/X_train_scaled.csv
+    - data/processed_data/y_train.csv
+    outs:
+    - models/best_params.pkl
+
+  train:
+    cmd: ./scripts/train.sh
+    deps:
+    - scripts/train.sh
+    - src/models/train.py
+    - data/processed_data/X_train_scaled.csv
+    - data/processed_data/y_train.csv
+    outs:
+    - models/xgb.pkl
+  
+  evaluate:
+    cmd: ./scripts/evaluate.sh
+    deps:
+    - scripts/evaluate.sh
+    - src/models/evaluate.py
+    - models/xgb.pkl
+    - data/processed_data/X_test_scaled.csv
+    - data/processed_data/y_test.csv
+    metrics:
+    - metrics/scores.json
+    outs:
+    - data/processed_data/y_pred.csv
